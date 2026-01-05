@@ -71,25 +71,6 @@ server/
 - **user/** — User authentication and profile management (registration, login, token generation)
 - **management/commands/** — Custom Django commands for populating sample data
 
-### Clean Code Structure
-```
-assessments/
-├── models.py           # Course, Exam, Question, Submission models
-├── views.py            # REST API endpoints
-├── serializers.py      # Request/response validation
-├── selectors.py        # Query optimization layer
-├── services/           # Business logic
-│   └── submission_service.py
-└── management/commands/
-    └── populate_sample_exam.py
-
-grading/
-├── service.py          # Grading orchestration
-├── providers/          # Pluggable grading implementations
-│   └── openai_provider.py
-├── prompt.py           # LLM prompt engineering
-└── dto.py              # Data transfer objects
-```
 
 ### Database Optimization
 - **Selectors Pattern**: Centralized query optimization with `select_related()` and `prefetch_related()`
