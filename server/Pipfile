@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-dotenv = "*"
+psycopg2-binary = "*"
+django-cors-headers = "*"
+gunicorn = "*"
+django-storages = "*"
+boto3 = "*"
+exceptiongroup = "*"
+botocore = "*"
+openai = "*"
+requests = "*"
+
+[dev-packages]
+isort = "*"
+black = "*"
+autoflake = "*"
+
+[requires]
+python_version = "3.12"
