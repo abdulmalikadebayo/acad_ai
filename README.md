@@ -199,17 +199,6 @@ make run
 ---
 | `make tidy` | Format code with black, isort, autoflake |
 
-### Quick Start with Make
-```bash
-# Complete setup (migrate + superuser + run server)
-make setup
-
-# Or step by step:
-make migrate
-python src/manage.py populate_sample_exam
-make run
-```
-
 
 ## Project Requirements Met
 
