@@ -1,3 +1,8 @@
+"""OpenAI GPT-4o grading provider.
+
+This provider sends text questions to OpenAI's API for evaluation.
+MCQ questions are handled separately by the grading service.
+"""
 import json
 import time
 from typing import Any
@@ -11,6 +16,12 @@ from grading.prompt import build_grading_prompt
 
 
 class OpenAIProvider:
+    """Grades text answers using OpenAI's GPT-4o model.
+    
+    Implements exponential backoff retry logic for transient failures.
+    Uses JSON mode to ensure structured responses.
+    """
+
     def __init__(self) -> None:
         if not settings.OPENAI_API_KEY:
             raise LLMGradingError("OPENAI_API_KEY is missing.")

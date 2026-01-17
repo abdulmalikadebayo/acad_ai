@@ -18,22 +18,11 @@ from dotenv import read_dotenv
 if environ.get("DEBUG") == "True":
     read_dotenv(".env")
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environ.get("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG") == "True"
 ALLOWED_HOSTS = ["*"]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -42,10 +31,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third-party apps
     "rest_framework",
     "rest_framework.authtoken",
-    # User-defined apps
     "user",
     "assessments",
     "grading",
@@ -82,12 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 if DEBUG:
-    print("debug mode")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -95,7 +77,6 @@ if DEBUG:
         }
     }
 else:
-    print("production mode")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -106,10 +87,6 @@ else:
             "PORT": environ.get("DB_PORT"),
         }
     }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,10 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -147,36 +120,24 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = "/staticfiles/"
 STATIC_ROOT = path.join(BASE_DIR, "staticfiles")
-# STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
 
-# Media files
 MEDIA_URL = "media/"
 MEDIA_ROOT = path.join(BASE_DIR, "media")
-# DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-# CORS settings
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8001",
     "http://localhost:5173",
 ]
 
-# CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8001",
     "http://localhost:5173",
 ]
-#
 
-# Logging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

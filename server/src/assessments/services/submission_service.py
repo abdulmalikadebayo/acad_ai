@@ -1,3 +1,9 @@
+"""Business logic for exam submissions.
+
+This service handles the complete submission flow: validation, persistence,
+and grading orchestration. All operations run within a database transaction
+to ensure consistency.
+"""
 from dataclasses import dataclass
 
 from django.db import transaction
@@ -51,7 +57,6 @@ def create_and_grade_submission(
     exam = Exam.objects.select_related("course").get(id=exam_id)
     _validate_exam_open(exam)
 
-    # Enforce one submission per exam per user
     if Submission.objects.filter(student_id=user_id, exam_id=exam_id).exists():
         raise ValidationError({"submission": "You have already submitted this exam."})
 
@@ -72,12 +77,10 @@ def create_and_grade_submission(
         answer_text = ""
 
         if q.type == QuestionType.MCQ:
-            # MCQ: Use selected_choice_id if provided, otherwise blank (0 points)
             choice_id = item.get("selected_choice_id")
             if choice_id:
                 selected_choice = _validate_choice(q, choice_id)
         else:
-            # TEXT: Use answer_text if provided, otherwise blank (0 points)
             answer_text = (item.get("answer_text") or "").strip()
 
         answer_rows.append(

@@ -1,3 +1,12 @@
+"""REST API views for the assessment system.
+
+Endpoints:
+    GET  /exams/              - List active exams
+    GET  /exams/<id>/         - Get exam with questions
+    POST /exams/<id>/submit/  - Submit answers and trigger grading
+    GET  /submissions/        - List user's submissions
+    GET  /submissions/<id>/   - Get submission with graded answers
+"""
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,6 +24,8 @@ from .services.submission_service import create_and_grade_submission
 
 
 class ExamListView(generics.ListAPIView):
+    """List all active exams available for the authenticated user."""
+
     permission_classes = [IsAuthenticated]
     serializer_class = ExamListSerializer
 
@@ -27,6 +38,8 @@ class ExamListView(generics.ListAPIView):
 
 
 class ExamDetailView(generics.RetrieveAPIView):
+    """Retrieve an exam with all its questions and choices."""
+
     permission_classes = [IsAuthenticated]
     serializer_class = ExamDetailSerializer
     lookup_url_kwarg = "exam_id"
@@ -36,6 +49,13 @@ class ExamDetailView(generics.RetrieveAPIView):
 
 
 class SubmissionCreateView(generics.GenericAPIView):
+    """Submit answers for an exam and receive graded results.
+    
+    The submission is graded synchronously using the configured provider
+    (LLM or mock). MCQ questions are graded deterministically; text
+    questions are evaluated by the grading provider.
+    """
+
     permission_classes = [IsAuthenticated]
     serializer_class = SubmissionCreateSerializer
 
@@ -55,6 +75,8 @@ class SubmissionCreateView(generics.GenericAPIView):
 
 
 class SubmissionListView(generics.ListAPIView):
+    """List all submissions for the authenticated user."""
+
     permission_classes = [IsAuthenticated]
     serializer_class = SubmissionListSerializer
 
@@ -67,6 +89,11 @@ class SubmissionListView(generics.ListAPIView):
 
 
 class SubmissionDetailView(generics.RetrieveAPIView):
+    """Retrieve a submission with graded answers.
+    
+    Only the submission owner can access their submission.
+    """
+
     permission_classes = [IsAuthenticated]
     serializer_class = SubmissionDetailSerializer
     lookup_url_kwarg = "submission_id"

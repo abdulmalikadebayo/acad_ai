@@ -1,3 +1,9 @@
+"""Grading orchestration service.
+
+This module coordinates the grading flow: building payloads, invoking
+the configured provider, normalizing results, and merging MCQ grades.
+MCQ questions are always graded deterministically regardless of provider.
+"""
 from decimal import Decimal
 from typing import Any
 
@@ -8,7 +14,7 @@ from grading.providers.openai_provider import OpenAIProvider
 
 
 def _build_payload(submission: Submission) -> dict[str, Any]:
-    # Optimize: fetch all related data in one query if not already prefetched
+    # Re-fetch with prefetching only if caller didn't optimize the query
     if not hasattr(submission, "_prefetched_objects_cache"):
         submission = (
             Submission.objects.select_related("exam", "exam__course")
@@ -23,7 +29,7 @@ def _build_payload(submission: Submission) -> dict[str, Any]:
     questions = []
     max_score = Decimal("0")
 
-    # Map correct choice for MCQ to evaluate deterministically, even if LLM is used.
+    # Pre-compute correct choices to grade MCQs without LLM involvement
     correct_choice_by_qid: dict[int, int] = {}
     for q in submission.exam.questions.all():
         max_score += q.points

@@ -1,4 +1,9 @@
-# Create your models here.
+"""Domain models for the assessment system.
+
+This module defines the core entities: Course, Exam, Question, Choice,
+Submission, and SubmissionAnswer. The schema supports both MCQ and
+short-text questions with LLM-powered grading.
+"""
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
